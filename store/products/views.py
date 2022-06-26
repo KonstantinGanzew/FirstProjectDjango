@@ -1,27 +1,21 @@
+from multiprocessing import context
 from django.shortcuts import render
+
+from products.models import ProductCategory, Product
 
 # Create your views here.
 # контроллеры = views (вьюхи) = функции
 
 def index(request):
-    return render(request, 'products/index.html')
+    context = {
+        'title': 'StoreShop',
+    }
+    return render(request, 'products/index.html', context)
 
 def products(request):
-    return render(request, 'products/products.html')
-
-def test_context(request):
     context = {
-        'title': 'Store',
-        'header': 'Добро пожаловать!',
-        'username': 'Константин Ганцев',
-        'products': [
-            {'name': 'Худи черного цвета с монограммами adidas Originals', 'price': 6090.00},
-            {'name': 'Синяя куртка The North Face', 'price': 23725.00},
-            {'name': 'Коричневый спортивный oversized-топ ASOS DESIGN', 'price': 3390.00},
-        ],
-#        'promotion': True,
-        'products_of_promotion': [
-            {'name': 'Черный рюкзак Nike Heritage', 'price': 2340.00},
-        ],
+        'title': 'Store - Каталог',
+        'categories': ProductCategory.objects.all(),
+        'products': Product.objects.all(),
     }
-    return render(request, 'products/test-context.html', context)
+    return render(request, 'products/products.html', context)
